@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Post;
 
 class PostsController extends Controller
 {
@@ -16,7 +17,9 @@ class PostsController extends Controller
      */
     public function index()
     {
-        return 'all the posts';
+        $posts = Post::all();
+//        dd($posts);
+        return view('posts.create', $posts);
     }
 
     /**
@@ -38,7 +41,8 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        return 'store a post';
+//        dd($request->all());
+        return back()->withInput();
 
     }
 
@@ -50,7 +54,9 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        return 'show a post';
+        $post = Post::find($id);
+        dd($post);
+
     }
 
     /**
@@ -61,7 +67,8 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        return 'edit a post';
+        $post = Post::find($id);
+        dd($post);
     }
 
     /**
@@ -73,7 +80,9 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return 'update a post';
+        $post = Post::find($id);
+        $post->title = "New Title Goes Here.";
+        $post->save();
     }
 
     /**
@@ -84,6 +93,8 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
+        $post = Post::find($id);
+        $post->delete();
         return 'destroy a post';
     }
 }
