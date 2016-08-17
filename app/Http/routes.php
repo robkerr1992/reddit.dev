@@ -30,7 +30,6 @@ Route::get('/sayhello/{name?}', function($name = 'Kings'){
 	// return view('my-first-view')->with('name', $name); // with single value
 });
 
-
 Route::get('/uppercase/{word?}', 'HomeController@upperCase');
 
 Route::get('/increment/{number?}', 'HomeController@increment');
