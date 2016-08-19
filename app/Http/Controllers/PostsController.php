@@ -7,9 +7,12 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Post;
+use Illuminate\Support\Facades\Log;
+
 
 class PostsController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -17,10 +20,9 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::paginate(4);
 //        dd($posts);
-//        dd($posts);
-        return view('posts.index', compact('posts'));
+        return view('posts.index')->with('posts', $posts);
     }
 
     /**
@@ -30,10 +32,10 @@ class PostsController extends Controller
      */
     public function create()
     {
+
         return view('posts.create');
 
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -42,18 +44,13 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request->all());
-//        back()->withInput();
+        $this->validate($request, Post::$rules);
         $post = new Post();
-        $post->title = $request->title;
-        $post->url = $request->url;
-        $post->content = $request->content;
         $post->created_by = 1;
-        $post->save();
-        return redirect()->action('PostsController@index');
+//============== $post->content = $request->content; ======= also valid ============= //
+        return $this->validateAndSave($request, $post);
 
     }
-
     /**
      * Display the specified resource.
      *
@@ -63,8 +60,12 @@ class PostsController extends Controller
     public function show($id)
     {
         $post = Post::find($id);
-        dd($post);
-        return view('posts.show', compact('post'));
+        if(!$post){
+            Log::info("Post with ID $id cannot be found.");
+            abort(404);
+        }
+//        dd($post);
+        return view('posts.show')->with('post', $post);
 
     }
 
@@ -76,8 +77,12 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-//        $post = Post::find($id);
-//        dd($post);
+        $post = Post::find($id);
+        if(!$post){
+            Log::info("Post with ID $id cannot be found.");
+            abort(404);
+        }
+        return view('posts.edit')->with('post', $post);
     }
 
     /**
@@ -89,9 +94,9 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-//        $post = Post::find($id);
-//        $post->title = "New Title Goes Here.";
-//        $post->save();
+        $post = Post::findOrFail($id);
+        return $this->validateAndSave($request, $post);
+
     }
 
     /**
@@ -100,10 +105,28 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-//        $post = Post::find($id);
-//        $post->delete();
-        return 'destroy a post';
+        $post = Post::find($id);
+        if(!$post){
+            Log::info("Post with ID $id cannot be found.");
+            abort(404);
+        }
+        $post->delete();
+        $request->session()->flash('message', 'Deletion Successful.');
+        return redirect()->action('PostsController@index');
+    }
+
+    private function validateAndSave (Request $request,Post $post){
+        $request->session()->flash('message', 'Message was not saved successfully.');
+        $this->validate($request, Post::$rules);
+        $request->session()->forget('ERROR_MESSAGE');
+        $post->title = $request->input('title');
+        $post->url = $request->input('url');
+        $post->content = $request->input('content');
+        $post->save();
+        Log::info($request->all());
+        $request->session()->flash('message', 'Post was saved successfully!');
+        return redirect()->action('PostsController@index');
     }
 }

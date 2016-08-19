@@ -1,7 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: MacBookPro
- * Date: 8/18/16
- * Time: 10:32 AM
- */
+@if($errors->has($field))
+    {!! $errors->first($field, '<span class="help-block">:message</span>') !!}
+
+@endif
