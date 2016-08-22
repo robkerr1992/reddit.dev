@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <form method="POST" action="{{ action('PostsController@update', $post->id) }}">
+    <form style="margin-top: 100px;" method="POST" action="{{ action('PostsController@update', $post->id) }}">
         {{ method_field('PUT') }}
         {{ csrf_field() }}
         Title: <input type="text" name="title" value="{{ $post->title }}">

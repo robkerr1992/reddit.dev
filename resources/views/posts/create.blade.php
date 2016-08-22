@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <form method="POST" action="{{ action('PostsController@store') }}">
+    <form style="margin-top: 100px;" method="POST" action="{{ action('PostsController@store') }}">
         {!! csrf_field() !!}
         Title: <input type="text" name="title" value="{{ old('title') }}">
         @include('partials.errors', ['field' => 'title'])

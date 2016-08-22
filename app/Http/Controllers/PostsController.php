@@ -7,11 +7,19 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Post;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 
 class PostsController extends Controller
 {
+
+    public function __construct()
+
+    {
+        $this->middleware('auth');
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -33,6 +41,9 @@ class PostsController extends Controller
     public function create()
     {
 
+//        if(!Auth::check()){
+//            return redirect()->action('Auth\AuthController@postLogin');
+//        }
         return view('posts.create');
 
     }
@@ -46,7 +57,7 @@ class PostsController extends Controller
     {
         $this->validate($request, Post::$rules);
         $post = new Post();
-        $post->created_by = 1;
+        $post->created_by = Auth::user()->id;
 //============== $post->content = $request->content; ======= also valid ============= //
         return $this->validateAndSave($request, $post);
 

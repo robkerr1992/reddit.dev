@@ -3,7 +3,7 @@
 @section('content')
     {{--{{dd($post)}}--}}
     {{--{!! $post !!}--}}
-    <dl>
+    <dl style="margin-top: 100px;">
         <dt>Title</dt>
         <dd>{{$post->title}}</dd>
         <dt>URL</dt>
