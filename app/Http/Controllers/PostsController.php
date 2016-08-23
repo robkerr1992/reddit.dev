@@ -26,10 +26,20 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::paginate(4);
-//        dd($posts);
+        $searchTerm = $request->input('searchTerm');
+        if(is_null($searchTerm)){
+            $posts = Post::with('user')->orderBy('created_at', 'desc')->paginate(8);
+        } else {
+//            if($request->input('searchBy') == 'title'){
+//                $posts  = Post::searchByTitle($searchTerm)->with('user')->orderBy('posts.created_at', 'asc')->paginate(8);
+//            }
+//            if($request->input('searchBy') == 'user'){
+//                $posts  = Post::searchByUser($searchTerm)->with('user')->orderBy('posts.created_at', 'asc')->paginate(8);
+//            }
+            $posts  = Post::searchBy($searchTerm)->with('user')->orderBy('posts.created_at', 'asc')->paginate(8);
+        }
         return view('posts.index')->with('posts', $posts);
     }
 
@@ -140,4 +150,6 @@ class PostsController extends Controller
         $request->session()->flash('message', 'Post was saved successfully!');
         return redirect()->action('PostsController@index');
     }
+
+
 }

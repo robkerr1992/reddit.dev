@@ -18,7 +18,7 @@
         }
         #nav {
             position: absolute;
-            top: 0;
+            bottom: 0;
             right: 25px;
 
         }
@@ -38,6 +38,7 @@
                     <ul class="nav nav-pills" id="nav">
                         @if(Auth::check())
                             <li role="presentation" class="navbutton" id="decks"><a class="listItem" href="/posts/create">Create Post</a></li>
+                            <li role="presentation" class="navbutton" id="decks"><a class="listItem" href="/posts">View Posts</a></li>
                             <li role="presentation" class="navbutton" id="logout"><a class="listItem" href="/auth/logout">Logout</a></li>
                         @else
                             <li role="presentation" class="navbutton" id="logIn"><a class="listItem" href="/auth/login">LogIn</a></li>
