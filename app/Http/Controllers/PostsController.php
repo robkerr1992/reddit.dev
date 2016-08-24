@@ -28,19 +28,20 @@ class PostsController extends Controller
      */
     public function index(Request $request)
     {
-//        dd($request);
         $searchTerm = $request->input('searchTerm');
-        if(is_null($searchTerm)){
-            $posts = Post::with('user')->orderBy('created_at', 'desc')->paginate(8);
-        } else {
-//            if($request->input('searchBy') == 'title'){
-//                $posts  = Post::searchByTitle($searchTerm)->with('user')->orderBy('posts.created_at', 'asc')->paginate(8);
-//            }
-//            if($request->input('searchBy') == 'user'){
-//                $posts  = Post::searchByUser($searchTerm)->with('user')->orderBy('posts.created_at', 'asc')->paginate(8);
-//            }
-            $posts  = Post::searchBy($searchTerm)->with('user')->orderBy('posts.created_at', 'asc')->paginate(8);
+        $order = $request->input('orderBy');
+        $posts = Post::with('user', 'votes');
+        if(!is_null($searchTerm)){
+            $posts  = Post::searchBy($searchTerm);
         }
+        if (!is_null($order) && $order == 'recency'){
+            $posts  = $posts->orderBy('created_at', 'desc');
+        } else {
+            $posts = $posts->orderBy('vote_score', 'desc');
+
+        }
+        $posts = $posts->paginate(8);
+//        $posts  = Post::searchBy($searchTerm)->with('user', 'votes')->orderBy('vote_score', 'desc')->paginate(8);
         return view('posts.index')->with('posts', $posts);
     }
 

@@ -12,7 +12,11 @@
                 </span>
             </div>
         </form>
+        Order By:<a href="?orderBy=postScore" data-search="postScore">PostScore</a> <a href="?orderBy=recency"  data-search="recency">Recency</a>
     </div>
+    {{--<div class="col-lg-3">--}}
+
+    {{--</div>--}}
     <div class="container-fluid">
         <table class="col-md-12">
             <thead>
@@ -59,7 +63,7 @@
 
     {{--<div class="col-md-8">--}}
     @if(is_null(Input::get('searchTerm')))
-        {!! $posts->render() !!}
+        {{--{!! $posts->render() !!}--}}
     {{--</div>--}}
     @else
         {!! $posts->appends(['searchTerm' => $_REQUEST['searchTerm']])->render() !!}

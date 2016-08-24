@@ -19,8 +19,16 @@ class Post extends BaseModel
     }
 
     public function votes(){
-        return $this->hasMany(Vote::class, 'post_id');
+        return $this->hasMany(Vote::class);
 
+    }
+
+    public function upVotes(){
+        return $this->votes()->where('vote', '=', 1);
+    }
+
+    public function downVotes(){
+        return $this->votes()->where('vote', '=', 0);
     }
 
 //    public static function searchByTitle($searchTerm){
@@ -36,6 +44,12 @@ class Post extends BaseModel
             ->orWhere('title', 'LIKE', "%$searchTerm%")
             ->orWhere('content', 'LIKE', "%$searchTerm%")
             ->orWhere('url', 'LIKE', "%$searchTerm%");
+    }
+    public function votesCount(){
+        $upVotes = $this->upVotes()->count();
+        $downVotes = $this->downVotes()->count();
+        return $upVotes - $downVotes;
+//        return static::join('votes', 'votes.post_id', '=', 'posts.id')->where('posts.id', '=', $postId)->where('votes.vote', '=', 1)->count();
     }
 
 }

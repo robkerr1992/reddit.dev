@@ -47,6 +47,9 @@ class VoteController extends Controller
         ]);
         $vote->vote = $request->input('vote');
         $vote->save();
+        $post = $vote->post;
+        $post->vote_score = $post->votesCount();
+        $post->save();
         Model::reguard();
         return redirect()->action('PostsController@index');
     }

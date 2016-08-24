@@ -14,11 +14,11 @@ class Vote extends BaseModel
 //    );
 
     public function post(){
-        return $this->hasOne(Post::class, 'post_id');
+        return $this->belongsTo(Post::class);
 
     }
     public function user(){
-        return $this->hasOne(User::class, 'user_id');
+        return $this->belongsTo(User::class);
 
     }
 }
