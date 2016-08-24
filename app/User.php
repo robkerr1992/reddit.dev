@@ -42,4 +42,11 @@ class User extends BaseModel implements AuthenticatableContract,
         return $this->hasMany(Post::class, 'created_by');
 
     }
+
+    public function votes(){
+        return $this->hasMany(Vote::class, 'user_id');
+
+    }
+
+
 }

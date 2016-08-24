@@ -14,7 +14,6 @@ use App\Post;
 
 
 Route::get('/', 'HomeController@showWelcome');
-
 Route::get('/sayhello/{name?}', function($name = 'Kings'){
 
 	if($name == 'Chris'){
@@ -31,9 +30,7 @@ Route::get('/sayhello/{name?}', function($name = 'Kings'){
 	// return view('my-first-view')->with($data); // exactly the same as above///////
 	// return view('my-first-view')->with('name', $name); // with single value
 });
-
 Route::get('/uppercase/{word?}', 'HomeController@upperCase');
-
 Route::get('/increment/{number?}', 'HomeController@increment');
 // Route::get('/rolldice/{guess}', function($guess){
 // 	$randomNum = mt_rand(1,6);
@@ -44,7 +41,6 @@ Route::get('/increment/{number?}', 'HomeController@increment');
 // 	// dd($data);
 // 	return view('roll-dice', $data);
 // });
-
 Route::get('/roll-dice/{guess?}', 'HomeController@rollDice');
 Route::resource('posts', 'PostsController');
 // exactly the same as above =======^^^^^^^^
@@ -55,15 +51,14 @@ Route::resource('posts', 'PostsController');
 //Route::get('/posts/{post}/edit', 'PostsController@edit');
 //Route::put('/posts/{post}', 'PostsController@update');
 //Route::delete('/posts/{post}/delete', 'PostsController@destroy');
-
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
-
 // Registration routes...
 Route::get('auth/register', 'Auth\AuthController@getRegister');
 Route::post('auth/register', 'Auth\AuthController@postRegister');
+Route::post('/votes', 'VoteController@store');
 
 
 Route::get('orm-test', function(){

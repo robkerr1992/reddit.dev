@@ -28,6 +28,7 @@ class PostsController extends Controller
      */
     public function index(Request $request)
     {
+//        dd($request);
         $searchTerm = $request->input('searchTerm');
         if(is_null($searchTerm)){
             $posts = Post::with('user')->orderBy('created_at', 'desc')->paginate(8);

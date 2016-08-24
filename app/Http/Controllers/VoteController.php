@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Vote;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class VoteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -38,18 +40,27 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Model::unguard();
+;        $vote = Vote::firstOrCreate([
+            'user_id' => Auth::id(),
+            'post_id' => $request->input('post_id'),
+        ]);
+        $vote->vote = $request->input('vote');
+        $vote->save();
+        Model::reguard();
+        return redirect()->action('PostsController@index');
     }
 
     /**
      * Display the specified resource.
+     *
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-
+        //
     }
 
     /**
@@ -84,11 +95,5 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function account($id)
-    {
-        $user = User::find($id);
-        return view('user.account')->with('user', $user);
     }
 }

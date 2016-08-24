@@ -55,5 +55,22 @@
     @endif
 
     @yield('content')
+    <script
+            src="https://code.jquery.com/jquery-3.1.0.min.js"   i
+            ntegrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
+            crossorigin="anonymous">
+
+    </script>
+    <script>
+        $('.vote').on('click', function (event) {
+            event.preventDefault();
+            var vote = $(this).data('vote');
+            var post = $(this).data('post');
+            $('#vote').val(vote);
+            $('#post_id').val(post);
+            var form = $('#post-vote');
+            form.submit();
+        })
+    </script>
 </body>
 </html>

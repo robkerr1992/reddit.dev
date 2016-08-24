@@ -9,12 +9,18 @@ class Post extends BaseModel
 {
     public static $rules = array(
         'title' => 'required|max:100',
-        'url'   => 'required|url'
+        'url'   => 'required|url',
+        'content'   => 'required',
     );
 
     public function user()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function votes(){
+        return $this->hasMany(Vote::class, 'post_id');
+
     }
 
 //    public static function searchByTitle($searchTerm){

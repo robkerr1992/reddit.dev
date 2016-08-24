@@ -27,6 +27,14 @@ $factory->define(App\Post::class, function(Faker\Generator $faker){
     'title' => $faker->words(4, true),
     'content' => $faker->sentence(),
     'url' => $faker->url,
+    ];
+});
+
+$factory->define(App\Vote::class, function(Faker\Generator $faker){
+    return[
+        'user_id' => App\User::all()->random()->id,
+        'post_id' => App\Post::all()->random()->id,
+        'vote' => 1,
 //    $post->save();
     ];
 });
