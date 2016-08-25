@@ -38,12 +38,12 @@
                 </div>
             </div>
         </div>
-        @include('partials.errors', ['field' => 'email'])
-        @include('partials.errors', ['field' => 'password'])
         <div class="form-group">
             <div class="col-sm-offset-5 col-sm-10">
                 <button type="submit" class="btn btn-default">Sign in</button>
             </div>
         </div>
+        @include('partials.errors', ['field' => 'email'])
+        @include('partials.errors', ['field' => 'password'])
     </form>
 @stop

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -15,9 +17,12 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function posts(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+        $posts = $user->posts()->paginate(10);
+//        dd($posts);
+        return view('user.posts')->with('posts', $posts);
     }
 
     /**
@@ -25,10 +30,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -38,7 +40,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+//            $this->validate($request, User::$rules);
+//            $user = new User();
+//            $user->id = Auth::user()->id;
+//            return $this->validateAndSave($request, $user);
+
     }
 
     /**
@@ -47,10 +54,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
 
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -60,7 +64,12 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+        if(!$user){
+            Log::info("User with ID $id cannot be found.");
+            abort(404);
+        }
+        return view('user.edit')->with('user', $user);
     }
 
     /**
@@ -72,7 +81,8 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        return $this->validateAndSave($request, $user);
     }
 
     /**
@@ -86,9 +96,26 @@ class UserController extends Controller
         //
     }
 
-    public function account($id)
+    public function show(Request $request, $id)
     {
         $user = User::find($id);
         return view('user.account')->with('user', $user);
+    }
+
+    private function validateAndSave (Request $request,User $user){
+//        dd($request);
+        if($request->input('password') === $request->input('confirmPassword')) {
+            $request->session()->flash('message', 'User Data was not saved.');
+            $this->validate($request, User::$rules);
+            $request->session()->forget('ERROR_MESSAGE');
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            $user->password = bcrypt($request->input('password'));
+            //        dd($user);
+            $user->save();
+            Log::info($request->all());
+            $request->session()->flash('message', 'User was saved successfully!');
+            return redirect()->action('UserController@edit', $user->id);
+        }
     }
 }

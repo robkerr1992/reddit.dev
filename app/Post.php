@@ -31,6 +31,7 @@ class Post extends BaseModel
         return $this->votes()->where('vote', '=', 0);
     }
 
+
 //    public static function searchByTitle($searchTerm){
 //        return static::where('title', 'LIKE', "%$searchTerm%");
 //    }
@@ -45,6 +46,7 @@ class Post extends BaseModel
             ->orWhere('content', 'LIKE', "%$searchTerm%")
             ->orWhere('url', 'LIKE', "%$searchTerm%");
     }
+
     public function votesCount(){
         $upVotes = $this->upVotes()->count();
         $downVotes = $this->downVotes()->count();

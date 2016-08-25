@@ -28,6 +28,7 @@ class PostsController extends Controller
      */
     public function index(Request $request)
     {
+//        dd(Auth::user()->name);
         $searchTerm = $request->input('searchTerm');
         $order = $request->input('orderBy');
         $posts = Post::with('user', 'votes');
@@ -40,7 +41,7 @@ class PostsController extends Controller
             $posts = $posts->orderBy('vote_score', 'desc');
 
         }
-        $posts = $posts->paginate(8);
+        $posts = $posts->paginate(10);
 //        $posts  = Post::searchBy($searchTerm)->with('user', 'votes')->orderBy('vote_score', 'desc')->paginate(8);
         return view('posts.index')->with('posts', $posts);
     }

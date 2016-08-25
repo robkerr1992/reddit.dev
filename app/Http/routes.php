@@ -43,6 +43,10 @@ Route::get('/increment/{number?}', 'HomeController@increment');
 // });
 Route::get('/roll-dice/{guess?}', 'HomeController@rollDice');
 Route::resource('posts', 'PostsController');
+Route::resource('user', 'UserController');
+Route::get('/user/posts/{id}', 'UserController@posts');
+//Route::get('/user/account/{id}', 'UserController@account');
+//Route::resource('user', 'UserController');
 // exactly the same as above =======^^^^^^^^
 //Route::get('/posts', 'PostsController@index');
 //Route::get('/posts/create', 'PostsController@create');

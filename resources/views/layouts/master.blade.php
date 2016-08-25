@@ -37,11 +37,13 @@
                 <div class="col-md-12 nav_container" id="header_nav">
                     <ul class="nav nav-pills" id="nav">
                         @if(Auth::check())
+                            <li role="presentation" class="navbutton" id="decks"><a class="listItem" href="/user/{{Auth::id()}}">{{Auth::user()->name}}</a></li>
                             <li role="presentation" class="navbutton" id="decks"><a class="listItem" href="/posts/create">Create Post</a></li>
                             <li role="presentation" class="navbutton" id="decks"><a class="listItem" href="/posts">View Posts</a></li>
                             <li role="presentation" class="navbutton" id="logout"><a class="listItem" href="/auth/logout">Logout</a></li>
                         @else
                             <li role="presentation" class="navbutton" id="logIn"><a class="listItem" href="/auth/login">LogIn</a></li>
+                            <li role="presentation" class="navbutton" id="logIn"><a class="listItem" href="/auth/register">Register</a></li>
                         @endif
 
                     </ul>
@@ -49,9 +51,8 @@
             </div>
         </div>
     </nav>
-
     @if (session()->has('message'))
-    <div class="alert alert-success">{{ session('message') }}</div>
+        <div style="margin-top: 120px;" class="alert alert-success">{{ session('message') }}</div>
     @endif
 
     @yield('content')
@@ -73,7 +74,7 @@
         });
 
 
-        function doAjax(){};
+//        function doAjax(){};
     </script>
 </body>
 </html>
