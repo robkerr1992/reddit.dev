@@ -17,6 +17,7 @@
     <form class="form-horizontal col-md-8 col-md-offset-2" style="margin-top: 150px;" method="post" action="{{ action('UserController@update', $user->id) }}">
         {{ method_field('PUT') }}
         {{ csrf_field() }}
+        <h1>Edit Account</h1>
         <div class="form-group">
             <div class="col-sm-10 col-sm-offset-1">
                 Name: <input type="text" class="form-control" name="name" id="name" value="{{ $user->name }}">
